@@ -27,9 +27,9 @@ Seguro.prototype.cotizarSeguro = function () {
 
     cantidad -= ((diferencia * 3) * cantidad) / 100;
 
-    if(this.tipo === 'basico'){
+    if (this.tipo === 'basico') {
         cantidad *= 1.30;
-    }else{
+    } else {
         cantidad *= 1.50;
     }
     return cantidad;
@@ -73,22 +73,40 @@ UI.prototype.mostrarMensaje = (mensaje, tipo) => {
 }
 
 
-UI.prototype.mostrarResusltado = (total,seguro)=>{
+UI.prototype.mostrarResusltado = (total, seguro) => {
+    const { marca, tipo, year } = seguro;
+    let textMarca;
+    switch (marca) {
+        case '1':
+            textMarca = 'Americano'
+            break;
+        case '2':
+            textMarca = 'Asiatico'
+            break;
+        case '3':
+            textMarca = 'Europeo'
+        default:
+            break;
+
+    }
     const div = document.createElement('div');
     div.classList.add('mt-10');
-    div.innerHTML= `
-    <p class="heaader"> Tu resumen</p>
+    div.innerHTML = `
+    <p class="heaader font-bold"> Tu resumen</p>
+    <p class="font-bold">Marca: <spam class="font-normal">${textMarca}</spam></p>
+    <p class="font-bold">Año: <spam class="font-normal">${year}</spam></p>
+    <p class="font-bold">Tipo de Seguro: <spam class="font-normal">${tipo}</spam></p>
     <p class="font-bold">Total: ${total}</p>
     `;
     const restltdoDiv = document.querySelector('#resultado');
-    
+
     const spiner = document.querySelector('#cargando');
     spiner.style.display = 'block';
 
-    setTimeout(()=>{
+    setTimeout(() => {
         spiner.style.display = 'none';
         restltdoDiv.appendChild(div);
-    },2000);
+    }, 2000);
 
 }
 
@@ -118,15 +136,15 @@ function cotizarSeguro(event) {
     } else {
         ui.mostrarMensaje('Cotizando...', 'exito');
         const resultados = document.querySelector('#resultado div');
-        if(resultados != null){
+        if (resultados != null) {
             resultados.remove();
         }
-        
+
         const seguro = new Seguro(marca, year, tipo);
         const total = seguro.cotizarSeguro();
 
-        ui.mostrarResusltado(total,seguro);
-        
+        ui.mostrarResusltado(total, seguro);
+
     }
 
 }
